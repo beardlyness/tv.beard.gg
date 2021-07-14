@@ -10,6 +10,7 @@ body  {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   color: #555;
+  background-image: url("../images/pattern.png");
   background-color: #fff0;
   overflow-x: auto;
   overflow-y: auto;
