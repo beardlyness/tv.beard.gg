@@ -1,0 +1,347 @@
+/*
+CSS Google Fonts import
+*/
+
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700,300|Raleway:300,200|Droid+Sans+Mono");
+
+/*---- BODY ----*/
+body  {
+  height: 100%;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  color: #555;
+  background-color: #fff0;
+  overflow-x: auto;
+  overflow-y: auto;
+  text-rendering: optimizeLegibility;
+  font-kerning: initial;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing:  inherit;
+}
+
+/*---- CONTAINER ----*/
+.container {
+  overflow: hidden;
+  position: relative;
+  width: 50%;
+  height: 50%;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  color: black;
+  line-height: 1.5;
+  margin: 2.5em auto 0;
+  word-wrap: break-word;
+  padding-top: 28.2%;
+}
+
+/*---- ROWS ----*/
+.row  {
+  display: table;
+  position: relative;
+  width: 100%;
+  z-index: 15;
+  transition: ease 100ms;
+  -webkit-transition: ease 100ms;
+}
+
+.row#hero {
+	padding-top: 40px;
+	text-align: center;
+	background: #fff0;
+	margin: 0px 0px 10px 0px;
+}
+
+.row#hero h4 {
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+/*----- Text -----*/
+
+/* P CSS */
+p {
+    line-height: 8px;
+    position: relative;
+    border-radius: 5px;
+    font-size: 14px;
+    word-wrap: break-word;
+}
+
+h2, h3, h4, h5 {
+    font-family: "Open Sans", sans-serif;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+h1 {
+    font-family: "Raleway", sans-serif;
+    font-weight: 200;
+    font-size: 3em;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+h2 {
+    font-weight: 300;
+    font-size: 2.5em;
+}
+
+h3 {
+    font-weight: 400;
+    font-size: 1.5em;
+    line-height: 1em;
+}
+
+h4 {
+    font-weight: 400;
+    margin: 1em 0;
+    font-size: 1.25em;
+}
+
+h5 {
+    font-weight: 700;
+    font-size: 1em;
+}
+
+b {
+  color: #A2A2EA;
+  font-weight: 200;
+}
+
+b:hover {
+  cursor: pointer;
+  font-weight: 200;
+  color: #9980FA;
+  transition:ease 200ms;
+  -webkit-transition:ease 200ms;
+}
+
+code {
+	color: #c7254e;
+	background-color: #f9f2f4;
+	border-radius: 4px;
+}
+
+blockquote {
+  border-left: 3px solid #e7e9ec;
+  padding: 0 0 0 16px;
+  margin: 0 0 30px;
+}
+
+/*---- A HREF ----*/
+a {
+  outline: none;
+  border:none;
+  color:#A2A2EA;
+  font-size:1em;
+  cursor:pointer;
+  text-decoration:none;
+  text-shadow:none;
+  transition:ease 200ms;
+  -webkit-transition:ease 200ms;
+}
+
+a:visited {
+  opacity:0.8;
+  transition:ease 200ms;
+  -webkit-transition:ease 200ms;
+}
+
+a:hover {
+  color:rgba(0,0,0,0.5);
+  transition:ease 200ms;
+  -webkit-transition:ease 200ms;
+}
+
+p a:hover {
+  background-color: #955ce7;
+  color: #ecf0f1;
+  border-radius: 2px;
+  padding: 2px;
+  transition:ease 60ms;
+  -webkit-transition:ease 60ms;
+}
+
+b a:hover {
+  cursor: pointer;
+  color: #9980FA;
+  text-shadow: 1px 1px 2px #722db499, 0 0 25px #6d1d9e80, 0 0 5px #9f6cd5cc;
+  transition:ease 200ms;
+  -webkit-transition:ease 200ms;
+}
+
+/*----- Footer -----*/
+
+footer {
+  padding: 2em 0;
+  display: inline-block;
+  width: 100%;
+  font-size:0.938em;
+  text-align: center;
+  background-color: #fff0;
+}
+
+footer p {
+  line-height: 1.5em;
+  color: #9e9e9e;
+}
+
+footer span,
+footer a {
+  color: rgba(0,0,0,0.5);
+  border-radius: 2px;
+  text-shadow:none;
+  display: inline-block;
+  padding:0 4px;
+}
+
+footer a:hover {
+  background-color: #27ae60;
+  border-radius: 2px;
+}
+
+footer a:focus {
+  font-weight: 700;
+  padding: 0 3px;
+}
+
+footer span:before {
+  content: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢";
+  padding-right: 0.5em;
+}
+
+footer span:nth-child(1):before {
+    content: "";
+}
+
+/*---- CUSTOM ----*/
+
+/*---- LOGO ----*/
+.logo {
+  max-width: 7%;
+  max-height: 7%;
+  transition: 1.5s;
+  transition: transform 1.5s;
+  -o-transition:  1.5s;
+  -ms-transition: 1.5s;
+  -webkit-transition: 1.5s;
+}
+
+.logo:hover {
+  transform: rotateY(180deg);
+  transition: 1.5s;
+  transition: transform 1.5s;
+  -o-transition:  1.5s;
+  -ms-transition: 1.5s;
+  -webkit-transition: 1.5s;
+}
+
+/*---- SOCIAL ----*/
+.social {
+  display: inline;
+  text-align: center;
+  transition: 1.5s;
+  transition: transform 1.5s;
+  -webkit-filter: grayscale(0%);
+  -o-transition:  1.5s;
+  -ms-transition: 1.5s;
+  -webkit-transition: 1.5s;
+}
+
+.social:hover {
+  background-color: transparent;
+  -webkit-filter: grayscale(100%);
+}
+
+/*---- SVG/XML ----*/
+.xmlsoc {
+  width: auto;
+  height: auto;
+  transition: 1.5s;
+  transition: transform 1.5s;
+  -o-transition:  1.5s;
+  -ms-transition: 1.5s;
+  -webkit-transition: 1.5s;
+}
+
+.xmlsoc:hover {
+  transform: rotate(666deg);
+  /* Oh noes a spooky ghoooooost */
+}
+
+/*---- IFRAME PLAYER ----*/
+.player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/*---- MEDIA ----*/
+@media only screen and (max-width:1600px) {
+  section {
+    width: 80%;
+    margin:0 10%;
+    }
+  }
+
+@media screen and (max-width: 1280px)  {
+  div.container {
+    width: 100% !important;
+    height: 100% !important;
+    padding-top: 56.3% !important;
+    display:block !important;
+  }
+}
+
+@media only screen and (max-width:1000px) {
+  section {
+    width:92%;
+    margin:0 4%;
+    }
+  }
+
+@media only screen and (max-width: 630px) {
+  h4 {
+    line-height: 16px;
+    position: relative;
+    border-radius: 5px;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  p {
+      line-height: 16px;
+      position: relative;
+      border-radius: 5px;
+      font-size: 12px;
+      word-wrap: break-word;
+  }
+}
+
+@media only screen and (max-width:600px) {
+  footer span {
+    display:block;
+    width:95%;
+    margin: 1em auto;
+    }
+  footer span:before {
+      content: "";
+    }
+  .logo {
+    max-width: 33% !important;
+    max-height: 33% !important;
+  }
+  h1 {
+    font-family: "Raleway", sans-serif !important;
+    font-weight: 200 !important;
+    font-size: 3em !important;
+    margin-top: 0.3em !important;
+    margin-bottom: 0.75em !important;
+  }
+  b:nth-child(1){
+    display: none;
+  }
+}
