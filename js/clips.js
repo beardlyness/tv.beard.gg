@@ -1,40 +1,27 @@
 /**
  * Twitch Clips Video Player
- * Loads and manages Twitch clip embeds for tv.beard.gg
+ * Dynamically fetches and manages Twitch clip embeds from Beardlands channel
  */
 
 (function() {
   'use strict';
 
-  // Twitch Clip URLs with parent parameters
-  const clips = [
-    "https://clips.twitch.tv/embed?clip=IronicMoldyLardSaltBae&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=BrainyHomelyDinosaurCmonBruh&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=HedonisticProductiveBeaverHotPokket&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=AntediluvianSassyHedgehogTooSpicy-vYLszOeS2IvWz2Zf&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=FurryBoredSnoodPoooound&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=VibrantRockyTroutPJSalt-20jRamN9icjuO0q5&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=PlumpAbrasiveRaccoonNononoCat-oUydhZKYTJoW1RMC&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=CautiousFunnyWallabyThisIsSparta&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=CooperativeObservantOkapiSquadGoals&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=AmorphousRelievedBulgogiWholeWheat-w-T_vYI_YG-rmPdy&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=LittleArborealCaribouOhMyDog-FvKEpTVGewY87DpY&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=GiftedStrongKuduFUNgineer-DPM8gHXDbGJhNFZw&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=PunchyFreezingMangoCurseLit-bFzNZEuJ4yES-3eV&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=FastTardyChickenPJSugar-cDy_EcC6nIjsQaV2&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=ImpartialDifficultMoonTakeNRG-W3VqRXP9Cr01eYfA&parent=tv.beard.gg&parent=www.tv.beard.gg",
-    "https://clips.twitch.tv/embed?clip=RelievedBigEggplantUWot-hhbME-xoLlXen-hI&parent=tv.beard.gg&parent=www.tv.beard.gg"
-  ];
-
+  // Twitch API Configuration
+  const TWITCH_CLIENT_ID = '#';
+  const TWITCH_CLIENT_SECRET = '#';
+  const BROADCASTER_NAME = 'beardlands';
+  
   /**
    * Video Player Manager
    */
   class TwitchClipPlayer {
     constructor() {
-      this.clips = clips;
+      this.clips = [];
       this.currentClipIndex = -1;
       this.iframe = null;
       this.playedClips = new Set();
+      this.accessToken = null;
+      this.broadcasterId = null;
       
       this.init();
     }
@@ -54,7 +41,7 @@
     /**
      * Setup the player after DOM is ready
      */
-    setup() {
+    async setup() {
       this.iframe = document.getElementById('twtvrnd');
       
       if (!this.iframe) {
@@ -62,20 +49,142 @@
         return;
       }
 
-      // Load initial random clip
+      // Show loading state
+      const container = this.iframe.closest('.container');
+      if (container) {
+        container.classList.add('loading');
+      }
+
+      try {
+        // Get OAuth token
+        await this.getAccessToken();
+        
+        // Get broadcaster ID
+        await this.getBroadcasterId();
+        
+        // Fetch clips
+        await this.fetchClips();
+        
+        // Load initial random clip
+        this.loadRandomClip();
+
+        // Setup keyboard shortcuts
+        this.setupKeyboardShortcuts();
+
+        // Setup theme toggle
+        this.setupThemeToggle();
+        
+        // Remove loading state
+        if (container) {
+          container.classList.remove('loading');
+        }
+      } catch (error) {
+        console.error('Error setting up player:', error);
+        if (container) {
+          container.classList.remove('loading');
+        }
+        // Fallback to a default clip if API fails
+        this.loadFallbackClip();
+      }
+    }
+
+    /**
+     * Get OAuth access token from Twitch
+     */
+    async getAccessToken() {
+      const response = await fetch('https://id.twitch.tv/oauth2/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          client_id: TWITCH_CLIENT_ID,
+          client_secret: TWITCH_CLIENT_SECRET,
+          grant_type: 'client_credentials'
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get access token');
+      }
+
+      const data = await response.json();
+      this.accessToken = data.access_token;
+      console.log('Access token obtained');
+    }
+
+    /**
+     * Get broadcaster ID from username
+     */
+    async getBroadcasterId() {
+      const response = await fetch(`https://api.twitch.tv/helix/users?login=${BROADCASTER_NAME}`, {
+        headers: {
+          'Client-ID': TWITCH_CLIENT_ID,
+          'Authorization': `Bearer ${this.accessToken}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get broadcaster ID');
+      }
+
+      const data = await response.json();
+      if (data.data && data.data.length > 0) {
+        this.broadcasterId = data.data[0].id;
+        console.log('Broadcaster ID:', this.broadcasterId);
+      } else {
+        throw new Error('Broadcaster not found');
+      }
+    }
+
+    /**
+     * Fetch clips from Twitch API
+     */
+    async fetchClips() {
+      const response = await fetch(
+        `https://api.twitch.tv/helix/clips?broadcaster_id=${this.broadcasterId}&first=100`,
+        {
+          headers: {
+            'Client-ID': TWITCH_CLIENT_ID,
+            'Authorization': `Bearer ${this.accessToken}`
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch clips');
+      }
+
+      const data = await response.json();
+      
+      if (data.data && data.data.length > 0) {
+        // Convert clips to embed URLs
+        this.clips = data.data.map(clip => {
+          return `https://clips.twitch.tv/embed?clip=${clip.id}&parent=tv.beard.gg&parent=www.tv.beard.gg&parent=localhost`;
+        });
+        console.log(`Fetched ${this.clips.length} clips from ${BROADCASTER_NAME}`);
+      } else {
+        console.warn('No clips found, using fallback');
+        this.loadFallbackClip();
+      }
+    }
+
+    /**
+     * Load a fallback clip if API fails
+     */
+    loadFallbackClip() {
+      this.clips = [
+        "https://clips.twitch.tv/embed?clip=IronicMoldyLardSaltBae&parent=tv.beard.gg&parent=www.tv.beard.gg&parent=localhost"
+      ];
       this.loadRandomClip();
-
-      // Setup keyboard shortcuts
-      this.setupKeyboardShortcuts();
-
-      // Setup theme toggle if it exists
-      this.setupThemeToggle();
     }
 
     /**
      * Get a random clip index
      */
     getRandomClipIndex() {
+      if (this.clips.length === 0) return -1;
+      
       // If all clips have been played, reset the played set
       if (this.playedClips.size >= this.clips.length) {
         this.playedClips.clear();
@@ -98,9 +207,11 @@
      * Load a random clip
      */
     loadRandomClip() {
-      if (!this.iframe) return;
+      if (!this.iframe || this.clips.length === 0) return;
 
       const index = this.getRandomClipIndex();
+      if (index === -1) return;
+      
       this.currentClipIndex = index;
       this.playedClips.add(index);
 
@@ -185,17 +296,13 @@
         }
       });
     }
-
-    /**
-     * Setup theme toggle functionality
-     */
+    
     setupThemeToggle() {
       const themeToggle = document.getElementById('themeToggle');
       
       if (!themeToggle) return;
 
-      // Remove theme toggle functionality since we have a single Twitch theme
-      // Just make it load a random clip instead
+      // Just load a random clip
       themeToggle.addEventListener('click', () => {
         this.loadRandomClip();
       });
@@ -210,6 +317,25 @@
         }
       });
     }
+
+    /**
+     * Get current clip URL
+     */
+    getCurrentClipUrl() {
+      if (this.currentClipIndex === -1 || !this.clips[this.currentClipIndex]) {
+        return window.location.href;
+      }
+      
+      // Extract clip ID from embed URL
+      const embedUrl = this.clips[this.currentClipIndex];
+      const clipIdMatch = embedUrl.match(/clip=([^&]+)/);
+      
+      if (clipIdMatch && clipIdMatch[1]) {
+        return `https://clips.twitch.tv/${clipIdMatch[1]}`;
+      }
+      
+      return window.location.href;
+    }
   }
 
   // Initialize the player
@@ -217,5 +343,91 @@
 
   // Expose to window for debugging
   window.TwitchClipPlayer = player;
+
+  /**
+   * Share Modal Functionality
+   */
+  class ShareModal {
+    constructor() {
+      this.modal = document.getElementById('shareModal');
+      this.shareBtn = document.getElementById('shareBtn');
+      this.modalClose = document.getElementById('modalClose');
+      this.modalOverlay = document.getElementById('modalOverlay');
+      this.shareUrl = document.getElementById('shareUrl');
+      this.copyBtn = document.getElementById('copyBtn');
+      this.copySuccess = document.getElementById('copySuccess');
+      
+      this.init();
+    }
+
+    init() {
+      if (!this.modal || !this.shareBtn) return;
+
+      // Open modal
+      this.shareBtn.addEventListener('click', () => this.openModal());
+
+      // Close modal
+      this.modalClose?.addEventListener('click', () => this.closeModal());
+      this.modalOverlay?.addEventListener('click', () => this.closeModal());
+
+      // Copy URL
+      this.copyBtn?.addEventListener('click', () => this.copyUrl());
+
+      // Close on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+          this.closeModal();
+        }
+      });
+    }
+
+    openModal() {
+      // Get current clip URL from player
+      const clipUrl = player.getCurrentClipUrl();
+      this.shareUrl.value = clipUrl;
+
+      // Show modal
+      this.modal.classList.add('active');
+      
+      // Select the URL for easy copying
+      setTimeout(() => {
+        this.shareUrl.select();
+      }, 100);
+    }
+
+    closeModal() {
+      this.modal.classList.remove('active');
+      this.copySuccess.classList.remove('show');
+    }
+
+    async copyUrl() {
+      try {
+        // Copy to clipboard
+        await navigator.clipboard.writeText(this.shareUrl.value);
+        
+        // Show success message
+        this.copySuccess.classList.add('show');
+        
+        // Hide after 2 seconds
+        setTimeout(() => {
+          this.copySuccess.classList.remove('show');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+        
+        // Fallback: select the text
+        this.shareUrl.select();
+        document.execCommand('copy');
+        
+        this.copySuccess.classList.add('show');
+        setTimeout(() => {
+          this.copySuccess.classList.remove('show');
+        }, 2000);
+      }
+    }
+  }
+
+  // Initialize share modal
+  const shareModal = new ShareModal();
 
 })();
