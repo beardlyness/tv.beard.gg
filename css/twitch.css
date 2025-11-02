@@ -755,3 +755,260 @@ h1 a:hover {
   animation: breathe 2s ease-in-out infinite;
 }
 
+/* ===== SHARE BUTTON ===== */
+.share-btn {
+  position: absolute;
+  bottom: 36rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all var(--transition-normal);
+  z-index: 10;
+  opacity: 0;
+}
+
+.container:hover .share-btn {
+  opacity: 1;
+}
+
+.share-btn:hover {
+  background: var(--twitch-purple);
+  border-color: var(--twitch-purple);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(145, 71, 255, 0.5);
+}
+
+.share-btn:active {
+  transform: scale(0.95);
+}
+
+.share-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ===== MODAL ===== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  position: relative;
+  background: var(--bg-alt);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(145, 71, 255, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+  overflow: hidden;
+}
+
+.modal-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--twitch-purple), var(--twitch-purple-light));
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color-light);
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+  background: var(--bg-alt-2);
+  border-color: var(--twitch-purple);
+  color: var(--text-primary);
+}
+
+.modal-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-body p {
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.share-input-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.share-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: var(--bg-alt-2);
+  border: 2px solid var(--border-color-light);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: "Droid Sans Mono", monospace;
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+}
+
+.share-input:focus {
+  outline: none;
+  border-color: var(--twitch-purple);
+  background: var(--bg-overlay);
+}
+
+.copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--twitch-purple);
+  border: none;
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  background: var(--twitch-purple-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(145, 71, 255, 0.4);
+}
+
+.copy-btn:active {
+  transform: translateY(0);
+}
+
+.copy-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.copy-success {
+  padding: 0.75rem 1rem;
+  background: var(--success);
+  color: white;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all var(--transition-normal);
+  pointer-events: none;
+}
+
+.copy-success.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE MODAL ===== */
+@media (max-width: 480px) {
+  .modal-content {
+    max-width: calc(100% - 2rem);
+  }
+  
+  .modal-header {
+    padding: 1rem;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .share-input-group {
+    flex-direction: column;
+  }
+  
+  .share-btn {
+    width: 44px;
+    height: 44px;
+    bottom: 0.75rem;
+    right: 0.75rem;
+  }
+  
+  .share-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
