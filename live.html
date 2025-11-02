@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Watch Beardlands live on Twitch - Live streaming gameplay and entertainment">
+  <meta name="keywords" content="Beardlands, Twitch, Live Stream, Gaming, BeardlyOG">
+  <meta name="author" content="BeardlyOG">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Beardlands Live - Twitch Stream">
+  <meta property="og:description" content="Watch Beardlands live on Twitch">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tv.beard.gg/live.html">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/media/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/media/favicon-16x16.png">
+  
+  <title>Live Stream | TV.Beard.GG</title>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/twitch.css">
+  
+  <style>
+    /* Live stream specific styles */
+    .live-container {
+      position: relative;
+      width: min(95%, 1400px);
+      margin: 2rem auto;
+    }
+    
+    .stream-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      background: var(--bg-alt);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color-light);
+    }
+    
+    .stream-wrapper::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--twitch-purple), var(--twitch-purple-light));
+      z-index: 2;
+    }
+    
+    .stream-wrapper:hover {
+      border-color: var(--twitch-purple);
+      box-shadow: 
+        var(--shadow-lg),
+        0 0 0 1px var(--twitch-purple),
+        var(--shadow-purple);
+    }
+    
+    .stream-player {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    
+    .chat-wrapper {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      margin-top: 1.5rem;
+      background: var(--bg-alt);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color-light);
+    }
+    
+    .chat-player {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    
+    .stream-info {
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border-color-light);
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stream-info h2 {
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+    
+    .live-icon {
+      width: 28px;
+      height: 28px;
+      transition: all 0.6s ease;
+      filter: drop-shadow(0 2px 8px rgba(145, 71, 255, 0.4));
+    }
+    
+    .stream-info:hover .live-icon {
+      animation: liveBreathe 2.5s ease-in-out infinite;
+      filter: drop-shadow(0 4px 16px rgba(145, 71, 255, 0.6));
+    }
+    
+    @keyframes liveBreathe {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-6px) scale(1.08);
+      }
+    }
+    
+    .live-icon circle {
+      transition: all 0.6s ease;
+    }
+    
+    .stream-info:hover .live-icon circle:nth-child(1) {
+      animation: pulse1 2.5s ease-in-out infinite;
+    }
+    
+    .stream-info:hover .live-icon circle:nth-child(2) {
+      animation: pulse2 2.5s ease-in-out infinite;
+    }
+    
+    .stream-info:hover .live-icon circle:nth-child(3) {
+      animation: pulse3 2.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse1 {
+      0%, 100% {
+        opacity: 1;
+        r: 8;
+      }
+      50% {
+        opacity: 0.9;
+        r: 8.5;
+      }
+    }
+    
+    @keyframes pulse2 {
+      0%, 100% {
+        opacity: 0.8;
+        r: 6;
+      }
+      50% {
+        opacity: 0.7;
+        r: 6.5;
+      }
+    }
+    
+    @keyframes pulse3 {
+      0%, 100% {
+        opacity: 0.6;
+        r: 4;
+      }
+      50% {
+        opacity: 0.5;
+        r: 4.5;
+      }
+    }
+    
+    .stream-info p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+    
+    .quick-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    
+    .quick-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-alt-2);
+      border: 2px solid var(--border-color-light);
+      border-radius: 8px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all var(--transition-normal);
+    }
+    
+    .quick-link:hover {
+      background: var(--twitch-purple);
+      border-color: var(--twitch-purple);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-purple);
+      text-decoration: none;
+    }
+    
+    .quick-link svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    /* Layout for larger screens - side-by-side stream and chat */
+    @media (min-width: 1200px) {
+      .live-container {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 1.5rem;
+        width: min(95%, 1600px);
+      }
+      
+      .stream-wrapper {
+        grid-column: 1;
+      }
+      
+      .chat-wrapper {
+        grid-column: 2;
+        grid-row: 1;
+        margin-top: 0;
+        height: auto;
+        min-height: 600px;
+      }
+      
+      .stream-info {
+        grid-column: 1 / -1;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .chat-wrapper {
+        height: 500px;
+      }
+      
+      .live-icon {
+        width: 24px;
+        height: 24px;
+      }
+      
+      .quick-links {
+        flex-direction: column;
+      }
+      
+      .quick-link {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="row">
+      <a href="https://tv.beard.gg" aria-label="TV Beard homepage">
+      <svg class="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" version="1.1">
+        <g id="surface1">
+        <path style=" fill:#a970ff00;" d="M 41.808594 55 L 32.910156 55 C 32.261719 55 31.65625 55.3125 31.28125 55.839844 L 26.789063 62.160156 C 26.414063 62.6875 25.808594 63 25.160156 63 L 21 63 C 19.894531 63 19 62.105469 19 61 L 19 57 C 19 55.894531 18.105469 55 17 55 L 7 55 C 5.894531 55 5 54.105469 5 53 L 5 13.660156 C 5 12.597656 5.421875 11.582031 6.171875 10.828125 L 10.828125 6.171875 C 11.582031 5.421875 12.597656 5 13.660156 5 L 56.890625 5 C 57.996094 5 58.890625 5.894531 58.890625 7 L 58.890625 37.621094 C 58.890625 38.667969 58.480469 39.671875 57.75 40.421875 L 44.671875 53.800781 C 43.917969 54.570313 42.886719 55 41.808594 55 Z "></path>
+        <path style=" fill:#a970ff00;" d="M 51 36.800781 L 51 14 C 51 13.449219 50.550781 13 50 13 L 14 13 C 13.449219 13 13 13.449219 13 14 L 13 46 C 13 46.550781 13.449219 47 14 47 L 22 47 C 22.550781 47 23 47.449219 23 48 L 23 52.640625 C 23 53.066406 23.273438 53.445313 23.675781 53.582031 C 24.082031 53.722656 24.527344 53.585938 24.789063 53.25 L 29.328125 47.378906 C 29.519531 47.132813 29.808594 46.992188 30.121094 46.988281 L 40.488281 46.988281 C 41.007813 46.992188 41.507813 46.789063 41.878906 46.429688 L 50.390625 38.230469 C 50.777344 37.855469 50.996094 37.339844 51 36.800781 Z "></path>
+        <path style=" fill:#a970ff00;" d="M 51 14 L 51 33.148438 L 37.148438 47 L 30.148438 47 C 29.839844 47 29.546875 47.144531 29.359375 47.390625 L 24.820313 53.25 C 24.566406 53.613281 24.101563 53.769531 23.679688 53.625 C 23.261719 53.484375 22.984375 53.082031 23 52.640625 L 23 48 C 23 47.449219 22.550781 47 22 47 L 14 47 C 13.871094 47 13.738281 46.972656 13.621094 46.921875 L 47.539063 13 L 50 13 C 50.550781 13 51 13.449219 51 14 Z "></path>
+        <path style=" fill:#a970ff00;" d="M 43.148438 13 L 13 43.148438 L 13 37.148438 L 37.148438 13 Z "></path>
+        <path style=" fill:#a970ff00;" d="M 34.148438 13 L 13 34.148438 L 13 31.148438 L 31.148438 13 Z "></path>
+        <path style=" fill:#a970ff00;" d="M 24 23 L 28 23 C 28.550781 23 29 23.449219 29 24 L 29 36 C 29 36.550781 28.550781 37 28 37 L 24 37 C 23.449219 37 23 36.550781 23 36 L 23 24 C 23 23.449219 23.449219 23 24 23 Z "></path>
+        <path style=" fill:#a970ff00;" d="M 36 23 L 40 23 C 40.550781 23 41 23.449219 41 24 L 41 36 C 41 36.550781 40.550781 37 40 37 L 36 37 C 35.449219 37 35 36.550781 35 36 L 35 24 C 35 23.449219 35.449219 23 36 23 Z "></path>
+        <path style=" fill:#A970FF;" d="M 56.890625 4 L 13.660156 4 C 12.332031 3.996094 11.058594 4.523438 10.121094 5.460938 L 5.460938 10.121094 C 4.523438 11.058594 3.996094 12.332031 4 13.660156 L 4 53 C 4 54.65625 5.34375 56 7 56 L 17 56 C 17.550781 56 18 56.449219 18 57 L 18 61 C 18 62.65625 19.34375 64 21 64 L 25.160156 64 C 26.132813 64.003906 27.046875 63.53125 27.609375 62.738281 L 32.101563 56.421875 C 32.285156 56.15625 32.589844 56 32.910156 56 L 41.800781 56 C 43.148438 56.003906 44.4375 55.460938 45.378906 54.5 L 58.460938 41.109375 C 59.371094 40.175781 59.882813 38.917969 59.878906 37.609375 L 59.878906 7 C 59.878906 5.347656 58.542969 4.003906 56.890625 4 Z M 57.890625 37.621094 C 57.890625 38.402344 57.585938 39.15625 57.039063 39.71875 L 44 53.101563 C 43.433594 53.675781 42.660156 54.003906 41.851563 54 L 32.910156 54 C 31.9375 53.996094 31.023438 54.46875 30.460938 55.261719 L 26 61.578125 C 25.8125 61.84375 25.503906 62 25.179688 62 L 21 62 C 20.449219 62 20 61.550781 20 61 L 20 57 C 20 55.34375 18.65625 54 17 54 L 7 54 C 6.449219 54 6 53.550781 6 53 L 6 13.660156 C 6 12.863281 6.316406 12.101563 6.878906 11.539063 L 7.070313 11.351563 C 7.214844 11.738281 7.585938 11.996094 8 12 L 10 12 C 10.550781 12 11 11.550781 11 11 C 11 10.449219 10.550781 10 10 10 L 8.410156 10 L 11.53125 6.878906 C 12.09375 6.316406 12.859375 5.996094 13.660156 6 L 56.890625 6 C 57.441406 6 57.890625 6.449219 57.890625 7 Z "></path>
+        <path style=" fill:#A970FF;" d="M 50 12 L 14 12 C 12.894531 12 12 12.894531 12 14 L 12 46 C 12 47.105469 12.894531 48 14 48 L 22 48 L 22 52.640625 C 22 53.492188 22.542969 54.253906 23.351563 54.53125 C 23.5625 54.601563 23.785156 54.640625 24.011719 54.640625 C 24.625 54.636719 25.203125 54.347656 25.578125 53.859375 L 30.121094 48 L 40.488281 48 C 41.265625 48 42.011719 47.699219 42.570313 47.160156 L 51.078125 39 C 51.675781 38.425781 52.011719 37.628906 52 36.800781 L 52 14 C 52 12.894531 51.105469 12 50 12 Z M 50 36.800781 C 50 37.070313 49.886719 37.332031 49.691406 37.519531 L 41.179688 45.71875 C 40.996094 45.898438 40.746094 46 40.488281 46 L 30.121094 46 C 29.5 46 28.917969 46.289063 28.539063 46.78125 L 24 52.640625 L 24 48 C 24 46.894531 23.105469 46 22 46 L 14 46 L 14 14 L 50 14 Z "></path>
+        <path style=" fill:#A970FF;" d="M 24 38 L 28 38 C 29.105469 38 30 37.105469 30 36 L 30 24 C 30 22.894531 29.105469 22 28 22 L 24 22 C 22.894531 22 22 22.894531 22 24 L 22 36 C 22 37.105469 22.894531 38 24 38 Z M 24 24 L 28 24 L 28 36 L 24 36 Z "></path>
+        <path style=" fill:#A970FF;" d="M 36 38 L 40 38 C 41.105469 38 42 37.105469 42 36 L 42 24 C 42 22.894531 41.105469 22 40 22 L 36 22 C 34.894531 22 34 22.894531 34 24 L 34 36 C 34 37.105469 34.894531 38 36 38 Z M 36 24 L 40 24 L 40 36 L 36 36 Z "></path>
+        <path style=" fill:#A970FF;" d="M 10 15 L 8 15 C 7.449219 15 7 15.449219 7 16 C 7 16.550781 7.449219 17 8 17 L 10 17 C 10.550781 17 11 16.550781 11 16 C 11 15.449219 10.550781 15 10 15 Z "></path>
+        <path style=" fill:#A970FF;" d="M 10 50 L 8 50 C 7.449219 50 7 50.449219 7 51 C 7 51.550781 7.449219 52 8 52 L 10 52 C 10.550781 52 11 51.550781 11 51 C 11 50.449219 10.550781 50 10 50 Z "></path>
+        <path style=" fill:#A970FF;" d="M 10 20 L 8 20 C 7.449219 20 7 20.449219 7 21 C 7 21.550781 7.449219 22 8 22 L 10 22 C 10.550781 22 11 21.550781 11 21 C 11 20.449219 10.550781 20 10 20 Z "></path>
+        <path style=" fill:#A970FF;" d="M 10 25 L 8 25 C 7.449219 25 7 25.449219 7 26 C 7 26.550781 7.449219 27 8 27 L 10 27 C 10.550781 27 11 26.550781 11 26 C 11 25.449219 10.550781 25 10 25 Z "></path>
+        <path style=" fill:#A970FF;" d="M 10 30 L 8 30 C 7.449219 30 7 30.449219 7 31 C 7 31.550781 7.449219 32 8 32 L 10 32 C 10.550781 32 11 31.550781 11 31 C 11 30.449219 10.550781 30 10 30 Z "></path>
+        <path style=" fill:#A970FF;" d="M 10 35 L 8 35 C 7.449219 35 7 35.449219 7 36 C 7 36.550781 7.449219 37 8 37 L 10 37 C 10.550781 37 11 36.550781 11 36 C 11 35.449219 10.550781 35 10 35 Z "></path>
+        <path style=" fill:#A970FF;" d="M 10 40 L 8 40 C 7.449219 40 7 40.449219 7 41 C 7 41.550781 7.449219 42 8 42 L 10 42 C 10.550781 42 11 41.550781 11 41 C 11 40.449219 10.550781 40 10 40 Z "></path>
+        <path style=" fill:#A970FF;" d="M 10 45 L 8 45 C 7.449219 45 7 45.449219 7 46 C 7 46.550781 7.449219 47 8 47 L 10 47 C 10.550781 47 11 46.550781 11 46 C 11 45.449219 10.550781 45 10 45 Z "></path>
+        <path style=" fill:#a970ff00;" d="M 19.648438 16 L 20.890625 18.261719 L 23.148438 19.5 L 20.890625 20.738281 L 19.648438 23 L 18.410156 20.738281 L 16.148438 19.5 L 18.410156 18.261719 Z "></path>
+        <path style=" fill:#a970ff00;" d="M 45.570313 23 L 46.421875 24.558594 L 47.980469 25.421875 L 46.421875 26.269531 L 45.570313 27.839844 L 44.710938 26.269531 L 43.148438 25.421875 L 44.710938 24.558594 Z "></path>
+        <path style=" fill:#a970ff00;" d="M 23.800781 41 L 24.378906 42.058594 L 25.441406 42.648438 L 24.378906 43.230469 L 23.800781 44.300781 L 23.210938 43.230469 L 22.148438 42.648438 L 23.210938 42.058594 Z "></path>
+        </g>
+      </svg>
+    </a>
+    <h1>
+      <a href="https://twitch.tv/Beardlands" target="_blank" rel="noopener">Beard</a>/s Live Stream
+    </h1>
+    <h4>Watch live gameplay, chat with the community, and enjoy the show! 🎮</h4>
+  </header>
+
+  <!-- Navigation Button -->
+  <button 
+    class="theme-toggle" 
+    onclick="window.location.href='index'" 
+    aria-label="Go to Clips Page"
+    title="View Clips">
+    🎬
+  </button>
+
+  <!-- Main Content -->
+  <main>
+    <div class="live-container">
+      <!-- Twitch Stream Player -->
+      <div class="stream-wrapper">
+        <iframe
+          class="stream-player"
+          src="https://player.twitch.tv/?channel=beardlands&parent=tv.beard.gg&parent=www.tv.beard.gg"
+          allowfullscreen
+          allow="autoplay; fullscreen"
+          title="Beardlands Twitch Live Stream">
+        </iframe>
+      </div>
+
+      <!-- Twitch Chat -->
+      <div class="chat-wrapper">
+        <iframe
+          class="chat-player"
+          src="https://www.twitch.tv/embed/beardlands/chat?parent=tv.beard.gg&parent=www.tv.beard.gg&darkpopout"
+          title="Beardlands Twitch Chat">
+        </iframe>
+      </div>
+
+      <!-- Stream Information -->
+      <div class="stream-info">
+        <h2>
+          <svg class="live-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="8" fill="#9147ff"/>
+            <circle cx="12" cy="12" r="6" fill="#a970ff" opacity="0.8"/>
+            <circle cx="12" cy="12" r="4" fill="#bf94ff" opacity="0.6"/>
+          </svg>
+          Live on Twitch
+        </h2>
+        <p>
+          Join the <strong><a href="https://twitch.tv/Beardlands" target="_blank" rel="noopener">Beardlands</a></strong> community for epic gaming moments!
+        </p>
+        
+        <div class="quick-links">
+          <a href="https://twitch.tv/Beardlands" target="_blank" rel="noopener" class="quick-link">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+            </svg>
+            Open on Twitch
+          </a>
+          <a href="index" class="quick-link">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+            </svg>
+            Watch Clips
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="social-links">
+      <a href="https://twitch.tv/beardlands" target="_blank" rel="noopener" class="social" aria-label="Twitch">
+        <svg class="xmlsoc" fill="#A970FF" viewBox="0 0 24 24">
+          <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+        </svg>
+      </a>
+      <a href="https://twitter.com/beardlyness" target="_blank" rel="noopener" class="social" aria-label="Twitter">
+        <svg class="xmlsoc" fill="#A970FF" viewBox="0 0 24 24">
+          <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+        </svg>
+      </a>
+      <a href="https://github.com/beardlyness" target="_blank" rel="noopener" class="social" aria-label="GitHub">
+        <svg class="xmlsoc" fill="#A970FF" viewBox="0 0 24 24">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+      </a>
+      <a href="https://steamcommunity.com/id/BeardlyOG" target="_blank" rel="noopener" class="social" aria-label="Steam">
+        <svg class="xmlsoc" fill="#A970FF" viewBox="0 0 24 24">
+          <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/>
+        </svg>
+      </a>
+    </div>
+    
+    <p>&copy; 2025 <a href="https://beard.gg" target="_blank" rel="noopener"><strong>Beard.GG</strong></a> | All Rights Reserved</p>
+    <p>Made with 💜 for the Gaming Community</p>
+    <p class="text-muted">
+      <kbd>Tip:</kbd> Click the clips button (🎬) to watch highlights | Follow on 
+      <a href="https://twitch.tv/Beardlands" target="_blank" rel="noopener">Twitch</a> for live streams
+    </p>
+  </footer>
+</body>
+</html>
